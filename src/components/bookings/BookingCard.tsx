@@ -12,6 +12,7 @@ import { ArrowRight, Check } from "lucide-react";
 import Link from "next/link";
 import type { Destination } from "@/lib/destinations";
 import { authClient } from "@/lib/auth-client";
+import { BASE_API_URL } from "@/lib/api";
 import React from "react";
 const BookingCard = ({ destination }: { destination: Destination }) => {
     const { data: session } = authClient.useSession()
@@ -31,7 +32,7 @@ const BookingCard = ({ destination }: { destination: Destination }) => {
 
         }
         console.log(data)
-        const res = await fetch(`http://localhost:5000/bookings`, {
+        const res = await fetch(`${BASE_API_URL}/bookings`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

@@ -1,3 +1,5 @@
+import { BASE_API_URL } from "@/lib/api";
+
 export type Destination = {
   _id: string;
   destinationName: string;
@@ -13,7 +15,8 @@ export type Destination = {
   highlights?: string[];
 };
 
-export const DESTINATIONS_API = "http://localhost:5000/destinations";
+export const DESTINATIONS_API = `${BASE_API_URL}/destinations`;
+export const FEATURED_DESTINATIONS_API = `${BASE_API_URL}/featured-destinations`;
 
 export type DestinationFilterValues = {
   category: string;

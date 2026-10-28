@@ -12,13 +12,14 @@ import {
 } from "@/components/ui/alert-dialog"
 import { Button } from "@/components/ui/button"
 import type { Destination } from "@/lib/destinations"
+import { BASE_API_URL } from "@/lib/api"
 import { useRouter } from "next/navigation"
 
 export function DeleteDestination({ destination }: { destination: Destination }) {
     const router = useRouter()
 
     const handleDelete = async () => {
-        const res = await fetch(`http://localhost:5000/destinations/${destination._id}`, {
+        const res = await fetch(`${BASE_API_URL}/destinations/${destination._id}`, {
             method: 'DELETE'
         })
         if (!res.ok) {

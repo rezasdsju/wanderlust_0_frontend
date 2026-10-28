@@ -24,9 +24,8 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
+import { BASE_API_URL } from "@/lib/api";
 import { formatPrice } from "@/lib/destinations";
-
-const BOOKINGS_API = "http://localhost:5000/bookings";
 
 export type Booking = {
   _id: string;
@@ -72,7 +71,7 @@ export default function MyBookingCard({ booking }: { booking: Booking }) {
   const href = `/all-destinations/${booking._id}`;
 
   const handleCancel = async () => {
-    const res = await fetch(`http://localhost:5000/my-bookings/${booking._id}`,{
+    const res = await fetch(`${BASE_API_URL}/my-bookings/${booking._id}`,{
         method:'DELETE'
     })
     const result = await res.json()

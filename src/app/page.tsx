@@ -5,6 +5,7 @@ import Testimonials from "@/components/Testimonials";
 
 import WhyChoose from "@/components/WhyChoose";
 import TravelCTA from "@/components/TravelCTA";
+import FeaturedDestinations from "@/components/FeaturedDestinations";
 
 export default function Home() {
   return (
@@ -28,6 +29,7 @@ export default function Home() {
        
         <Banner />
       </main>
+      <FeaturedDestinations></FeaturedDestinations>
       <WhyChoose />
       <Testimonials />
       <TravelCTA />

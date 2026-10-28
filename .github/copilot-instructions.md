@@ -22,6 +22,6 @@
 - Tailwind CSS 4 is configured through CSS imports and theme variables in `src/app/globals.css`, not a Tailwind JavaScript config. Prefer the existing theme tokens and utility classes when styling.
 - The primary accent is `#1598ff`, and section decorations follow the accent-bar pattern in `src/components/WhyChoose.tsx`. Display headings use Josefin Sans with `font-light tracking-[-0.065em]`.
 - Next.js 16 uses `preload` on `next/image`; `priority` is deprecated (still present in `Navbar.tsx`).
-- The backend API is hardcoded at `http://localhost:5000` (`GET /destinations`, `POST /add-destination`); no env var. Because destination images are user-supplied, `next.config.ts` allows any http(s) host in `images.remotePatterns`.
+- The backend base URL comes from `BASE_API_URL` in `.env`, mirrored as `NEXT_PUBLIC_BASE_API_URL` for client components; `src/lib/api.ts` normalizes both and falls back to `http://localhost:5000`. Because destination images are user-supplied, `next.config.ts` allows any http(s) host in `images.remotePatterns`.
 - UI primitives combine `class-variance-authority` variants with the `cn` class helper; follow the patterns in `src/components/ui/button.tsx` and `src/components/ui/card.tsx`. `cn` comes from the `cn` npm package via `src/lib/utils.ts`.
 - The root `AGENTS.md` contains a Next.js-specific requirement: before changing Next.js code, read the relevant guide under `node_modules/next/dist/docs/` and follow its version-specific guidance.

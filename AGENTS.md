@@ -22,15 +22,15 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 - Next.js 16.4.3 App Router, React 19, Tailwind CSS v4. Four routes: `/` (marketing page), `/add-destination` (form that POSTs to the API), `/all-destinations` (fetched listing with filters), and `/all-destinations/[id]` (fetched detail page).
 - Root layout (`src/app/layout.tsx`) renders `Navbar` and `Footer` on every route. Pages should render their own `<main>` and must not repeat those.
-- Home (`src/app/page.tsx`) composes `Banner`, `WhyChoose`, `Testimonials`, `TravelCTA` from `src/components/`. Shared primitives live in `src/components/ui/` (shadcn "base-nova" style, built on Base UI + `class-variance-authority`).
-- Destination types, the `DESTINATIONS_API` base URL, price ranges, formatting, and filter/sort logic live in `src/lib/destinations.ts`. `/all-destinations` filters via URL params (`category`, `price`, `sort`) through the client `DestinationFilters` component; cards link to `/all-destinations/[id]`.
+- Home (`src/app/page.tsx`) composes `Banner`, `FeaturedDestinations`, `WhyChoose`, `Testimonials`, `TravelCTA` from `src/components/`. Shared primitives live in `src/components/ui/` (shadcn "base-nova" style, built on Base UI + `class-variance-authority`).
+- Destination types, the API endpoint constants (`DESTINATIONS_API`, `FEATURED_DESTINATIONS_API`), price ranges, formatting, and filter/sort logic live in `src/lib/destinations.ts`. `/all-destinations` filters via URL params (`category`, `price`, `sort`) through the client `DestinationFilters` component; cards link to `/all-destinations/[id]`.
 - `@/*` maps to `src/*`; shadcn aliases are in `components.json`. Add primitives with `npx shadcn@latest add <name>`.
 - `src/lib/utils.ts` re-exports `cn` from the `cn` npm package — not `clsx` + `tailwind-merge`.
 
 ## Conventions and quirks
 
 - `next.config.ts` enables `reactCompiler` plus a Turbopack Tailwind loader, and sets `images.remotePatterns` to any http(s) host because destination image URLs are user-supplied. Read it before changing Next, images, or styling behavior.
-- The backend API is hardcoded at `http://localhost:5000` (`GET /destinations`, `POST /add-destination`); there is no env var. `/all-destinations` is dynamic (`cache: "no-store"`), so `npm run build` works offline but serving that page requires the API.
+- The backend base URL comes from `BASE_API_URL` in `.env`; client components read the mirrored `NEXT_PUBLIC_BASE_API_URL` (server code can fall back to it too). Both are normalized in `src/lib/api.ts`, which defaults to `http://localhost:5000` when unset. `/all-destinations` and `/` are dynamic (`cache: "no-store"`), so `npm run build` works offline but serving those pages requires the API.
 - Typed Routes are generated and consumed through global `PageProps` / `LayoutProps` types (e.g. `LayoutProps<"/">`); generated under `.next/types`. Prefer them over hand-written route params.
 - Server components by default. Add `"use client"` only for state, events, or browser APIs.
 - Tailwind v4 is configured in CSS (`@theme` / variables in `src/app/globals.css`), not a JS config. Use existing tokens.
@@ -42,5 +42,5 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 ## Status
 
-- No tests, CI workflows (`.github/` only holds `copilot-instructions.md`), pre-commit hooks, formatter, or env vars. `.env*` is gitignored.
+- No tests, CI workflows (`.github/` only holds `copilot-instructions.md`), or pre-commit hooks/formatter. `.env` (gitignored) holds `BASE_API_URL`, `NEXT_PUBLIC_BASE_API_URL`, auth, and Mongo settings.
 - `.github/copilot-instructions.md` mirrors this file — keep both in sync.

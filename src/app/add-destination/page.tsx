@@ -1,8 +1,12 @@
 'use client'
-import type { FormEvent } from "react";
+// import type { FormEvent } from "react";
 import Link from "next/link";
 import { ChevronDown, CircleX, Plus } from "lucide-react";
 import { fieldClass, inputClass, labelClass } from "@/lib/form-styles";
+// import { authClient } from "@/lib/auth-client";
+import React from "react";
+import getTokenFromClient from "@/lib/getTokenFromClient";
+import { BASE_API_URL } from "@/lib/api";
 
 const categories = [
     "Beach",
@@ -16,25 +20,29 @@ const categories = [
 
 export default function AddDestinationPage() {
 
-    const handleAddDestination = async (e: FormEvent<HTMLFormElement>) => {
+    const handleAddDestination = async (e: React.SubmitEvent<HTMLFormElement>) => {
         e.preventDefault()
         const formData = new FormData(e.currentTarget)
         const newDestinationData = Object.fromEntries(formData.entries())
         console.log('newDestinationData: ', newDestinationData)
+        const token = await getTokenFromClient()
+        console.log('token: ', token)
 
-        const res = await fetch(`http://localhost:5000/add-destination`, {
+
+        const res = await fetch(`${BASE_API_URL}/add-destination`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                authorization: `Bearer ${token}`
             },
             body: JSON.stringify(newDestinationData),
         })
-        if (!res.ok){
+        if (!res.ok) {
             console.log('BIG Error')
         }
         const result = await res.json()
-        console.log('result: ',result)
-        if (result.acknowledged){
+        console.log('result: ', result)
+        if (result.acknowledged) {
             console.log('Successfully inserted data')
         }
     }

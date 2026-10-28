@@ -12,6 +12,8 @@ import {
 import { fieldClass, inputClass, labelClass } from "@/lib/form-styles";
 import type { Destination } from "@/lib/destinations";
 import type { FormEvent } from "react";
+import getTokenFromClient from "@/lib/getTokenFromClient";
+import { BASE_API_URL } from "@/lib/api";
 
 const categories = [
     "Beach",
@@ -29,10 +31,13 @@ const EditDestinationDialog = ({ destination }: { destination: Destination }) =>
         e.preventDefault()
         const formData = new FormData(e.currentTarget)
         const updateData = Object.fromEntries(formData.entries())
-        const res = await fetch(`http://localhost:5000/destinations/${destination._id}`, {
+
+        const token = await getTokenFromClient()
+        const res = await fetch(`${BASE_API_URL}/destinations/${destination._id}`, {
             method: 'PATCH',
             headers: {
                 "Content-Type": "application/json",
+                authorization:`Bearer ${token}`
             },
             body: JSON.stringify(updateData),
         })

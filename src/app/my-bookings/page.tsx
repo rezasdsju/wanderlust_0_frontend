@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { headers } from "next/headers";
 import { auth } from "@/lib/auth";
+import { BASE_API_URL } from "@/lib/api";
 
 import MyBookingCard, { type Booking } from "@/components/bookings/MyBookingCard";
 
@@ -15,7 +16,7 @@ const MyBookingPage = async () => {
   if (user?.email) {
     try {
       const res = await fetch(
-        `http://localhost:5000/my-bookings/${user.email}`,
+        `${BASE_API_URL}/my-bookings/${user.email}`,
         { cache: "no-store" },
       );
       if (res.ok) {

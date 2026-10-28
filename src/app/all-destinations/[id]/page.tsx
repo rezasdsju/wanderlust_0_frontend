@@ -18,8 +18,9 @@ import {
   formatDuration,
   type Destination,
 } from "@/lib/destinations";
-import { auth } from "@/lib/auth";
-import { headers } from "next/headers";
+// import { auth } from "@/lib/auth";
+// import { headers } from "next/headers";
+import getTokenFromServer from "@/lib/getTokenFromServer";
 
 
 
@@ -37,16 +38,15 @@ export default async function DestinationDetailPage({
   const { id } = await params;
 
 
-  // const token = await auth.api.getToken({
-  //   headers: await headers()
-  // })
-  // console.log('token: ',token)
+  const token = await getTokenFromServer()
+  console.log('token: ',token)
   if (!/^[a-f0-9]{24}$/i.test(id)) notFound();
 
   const response = await fetch(`${DESTINATIONS_API}/${id}`, {
     cache: "no-store",
     headers:{
-      authorization:'User Logged In'
+      authorization: `Bearer ${token}`
+      // authorization:'User Logged In'
     }
   });
   if (response.status === 404) notFound();
